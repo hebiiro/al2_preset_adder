@@ -14,7 +14,7 @@
       <ModuleDefinitionFile>main.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetPath)" "$(aviutl2_dir)\data\Plugin\$(TargetName)$(aviutl2_plugin_ext)"</Command>
+      <Command>copy /Y "$(TargetPath)" "$(aviutl2_dir)\data\Plugin\al2\$(TargetName)$(aviutl2_plugin_ext)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

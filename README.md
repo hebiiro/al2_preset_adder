@@ -16,25 +16,33 @@
 ## 🚀インストール
 
 * `プラグインフォルダ`に以下のファイルを入れてください。
-	* `al2_preset_adder.aux2`
-	* `al2` (フォルダ)
-		* `assets` (フォルダ)
-			* `al2_preset_adder` (フォルダ) ✏️ここにプリセットの初期値が入っています。
-				* `project.tsv` (プロジェクト)
-				* `video_size.tsv` (映像サイズ)
-				* `video_rate.tsv` (フレームレート)
-				* `audio_rate.tsv` (サンプリングレート)
-				* `scene_name.tsv` (シーン名)
-				* `layer_name.tsv` (レイヤー名)
-	* (上記ファイルはzipファイル内の`Plugin`フォルダに入っています)
+	* `al2` ✏️フォルダ
+		* `al2_preset_adder.aux2` ✏️汎用プラグインファイル
+		* `assets` ✏️フォルダ
+			* `al2_preset_adder` ✏️フォルダ(ここにプリセットの初期値が入っています)
+				* `project.tsv` ✏️プロジェクト
+				* `video_size.tsv` ✏️映像サイズ
+				* `video_rate.tsv` ✏️フレームレート
+				* `audio_rate.tsv` ✏️サンプリングレート
+				* `scene_name.tsv` ✏️シーン名
+				* `layer_name.tsv` ✏️レイヤー名
+* (上記ファイルはzipファイル内の`Plugin`フォルダに入っています)
 
 ## 🔥アンインストール
 
 * `プラグインフォルダ`から以下のファイルを削除してください。
-	* `al2_preset_adder.aux2`
-	* `al2/config/al2_preset_adder.json`
-	* `al2/config/al2_preset_adder` (フォルダ)
-	* `al2/assets/al2_preset_adder` (フォルダ)
+	* `al2` ✏️フォルダ
+		* `al2_preset_adder.aux2` ✏️これを削除
+
+### 🔥完全アンインストール
+
+* 設定やアセットまですべて消す場合は、`プラグインフォルダ`から以下のファイルも削除してください。
+	* `al2` ✏️フォルダ
+		* `config` ✏️フォルダ
+			* `al2_preset_adder.json` ✏️このファイルを削除
+			* `al2_preset_adder` ✏️このフォルダを削除
+		* `assets` ✏️フォルダ
+			* `al2_preset_adder` ✏️このフォルダを削除
 
 ## 💡使い方
 
@@ -51,9 +59,11 @@
 
 ### 🏷️設定を初期化する
 
-1. aviutl2を起動していない状態で以下のファイルを削除してください。
-	* `al2/config/al2_preset_adder.json`
-	* `al2/config/al2_preset_adder` (フォルダ)
+1. aviutl2を起動していない状態で`プラグインフォルダ`内の以下のファイルを削除してください。
+	* `al2` ✏️フォルダ
+		* `config` ✏️フォルダ
+			* `al2_preset_adder.json` ✏️このファイルを削除
+			* `al2_preset_adder` ✏️このフォルダを削除
 
 ## 🔧設定
 

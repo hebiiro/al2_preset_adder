@@ -23,7 +23,7 @@ namespace apn::preset_adder::table
 			auto base_path = my::get_module_file_name(hive.instance);
 
 			// テーブルフォルダのパスを取得します。
-			dir = base_path.parent_path() / L"al2" / L"config" / base_path.stem();
+			dir = base_path.parent_path() / L"config" / base_path.stem();
 
 			// テーブルフォルダを作成しておきます。
 			try { std::filesystem::create_directories(dir); } catch (...) {}
@@ -31,7 +31,7 @@ namespace apn::preset_adder::table
 			// アセットフォルダからコンフィグフォルダにファイルをコピーします。
 			// ただし、上書きはしません。既存のファイルを優先します。
 			{
-				auto from = base_path.parent_path() / L"al2" / L"assets" / base_path.stem();
+				auto from = base_path.parent_path() / L"assets" / base_path.stem();
 				auto to = dir;
 
 				entry_t::copy_file(from, to);

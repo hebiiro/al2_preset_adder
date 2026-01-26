@@ -15,7 +15,7 @@ namespace apn::preset_adder
 			MY_TRACE_FUNC("");
 
 			auto module_file_path = my::get_module_file_name(hive.instance);
-			auto config_folder_path = module_file_path.parent_path() / L"al2" / L"config";
+			auto config_folder_path = module_file_path.parent_path() / L"config";
 
 			path = hive.config_file_name = config_folder_path /
 				module_file_path.filename().replace_extension(L".json");
