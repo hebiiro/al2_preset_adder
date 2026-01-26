@@ -50,14 +50,14 @@ namespace apn::preset_adder
 		//
 		// ノードからダイアログ名の設定を読み込みます。
 		//
-		BOOL read_dialog_name(n_json& root)
+		BOOL read_dialog_title(n_json& root)
 		{
 			MY_TRACE_FUNC("");
 
-			read_string(root, "dialog_name.new_project", hive.dialog_name.new_project);
-			read_string(root, "dialog_name.new_scene", hive.dialog_name.new_scene);
-			read_string(root, "dialog_name.set_scene", hive.dialog_name.set_scene);
-			read_string(root, "dialog_name.set_layer_name", hive.dialog_name.set_layer_name);
+			read_string(root, "dialog_title.new_project", hive.dialog_title.new_project);
+			read_string(root, "dialog_title.new_scene", hive.dialog_title.new_scene);
+			read_string(root, "dialog_title.set_scene", hive.dialog_title.set_scene);
+			read_string(root, "dialog_title.set_layer_name", hive.dialog_title.set_layer_name);
 
 			return TRUE;
 		}
@@ -65,14 +65,14 @@ namespace apn::preset_adder
 		//
 		// ノードにダイアログ名の設定を書き込みます。
 		//
-		BOOL write_dialog_name(n_json& root)
+		BOOL write_dialog_title(n_json& root)
 		{
 			MY_TRACE_FUNC("");
 
-			write_string(root, "dialog_name.new_project", hive.dialog_name.new_project);
-			write_string(root, "dialog_name.new_scene", hive.dialog_name.new_scene);
-			write_string(root, "dialog_name.set_scene", hive.dialog_name.set_scene);
-			write_string(root, "dialog_name.set_layer_name", hive.dialog_name.set_layer_name);
+			write_string(root, "dialog_title.new_project", hive.dialog_title.new_project);
+			write_string(root, "dialog_title.new_scene", hive.dialog_title.new_scene);
+			write_string(root, "dialog_title.set_scene", hive.dialog_title.set_scene);
+			write_string(root, "dialog_title.set_layer_name", hive.dialog_title.set_layer_name);
 
 			return TRUE;
 		}
@@ -84,7 +84,7 @@ namespace apn::preset_adder
 		{
 			MY_TRACE_FUNC("");
 
-			read_dialog_name(root);
+			read_dialog_title(root);
 
 			return TRUE;
 		}
@@ -96,7 +96,7 @@ namespace apn::preset_adder
 		{
 			MY_TRACE_FUNC("");
 
-			write_dialog_name(root);
+			write_dialog_title(root);
 
 			return TRUE;
 		}

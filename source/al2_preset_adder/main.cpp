@@ -57,6 +57,7 @@ namespace apn::preset_adder
 	//
 	EXTERN_C bool InitializePlugin(DWORD version)
 	{
+		if (version < 2003000) return false;
 #ifdef _DEBUG
 		// デバッグ用のコードです。
 		{
@@ -96,5 +97,13 @@ namespace apn::preset_adder
 		host->set_plugin_information(version.information.c_str());
 
 		host->register_window_client(version.name.c_str(), hive.plugin_window);
+	}
+
+	//
+	// aviutl2のコンフィグを取得します。
+	//
+	EXTERN_C void InitializeConfig(CONFIG_HANDLE* config)
+	{
+		hive.aviutl2.config = config;
 	}
 }

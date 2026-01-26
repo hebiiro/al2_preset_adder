@@ -44,7 +44,7 @@ namespace apn::preset_adder::dialog
 		virtual BOOL subclass(HWND hwnd) override
 		{
 			// ウィンドウ名がマッチしない場合は失敗します。
-			if (!match(my::get_window_text(hwnd), hive.dialog_name.set_layer_name)) return FALSE;
+			if (!match(my::get_window_text(hwnd), hive.dialog_title.set_layer_name)) return FALSE;
 
 			return __super::subclass(hwnd);
 		}

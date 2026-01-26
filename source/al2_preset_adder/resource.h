@@ -3,14 +3,14 @@
 // al2_preset_adder.rc で使用
 //
 #define idd_config                      100
-#define idc_dialog_name_new_project_stc 10000
-#define idc_dialog_name_new_project     10001
-#define idc_dialog_name_new_scene_stc   10002
-#define idc_dialog_name_new_scene       10003
-#define idc_dialog_name_set_scene_stc   10004
-#define idc_dialog_name_set_scene       10005
-#define idc_dialog_name_set_layer_name_stc 10006
-#define idc_dialog_name_set_layer_name  10007
+#define idc_dialog_title_new_project_stc 10000
+#define idc_dialog_title_new_project     10001
+#define idc_dialog_title_new_scene_stc   10002
+#define idc_dialog_title_new_scene       10003
+#define idc_dialog_title_set_scene_stc   10004
+#define idc_dialog_title_set_scene       10005
+#define idc_dialog_title_set_layer_name_stc 10006
+#define idc_dialog_title_set_layer_name  10007
 
 // Next default values for new objects
 // 

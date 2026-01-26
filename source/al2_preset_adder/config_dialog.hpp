@@ -58,10 +58,10 @@ namespace apn::preset_adder
 
 			locker_t locker(this);
 
-			set_text(idc_dialog_name_new_project, hive.dialog_name.new_project);
-			set_text(idc_dialog_name_new_scene, hive.dialog_name.new_scene);
-			set_text(idc_dialog_name_set_scene, hive.dialog_name.set_scene);
-			set_text(idc_dialog_name_set_layer_name, hive.dialog_name.set_layer_name);
+			set_text(idc_dialog_title_new_project, hive.dialog_title.new_project);
+			set_text(idc_dialog_title_new_scene, hive.dialog_title.new_scene);
+			set_text(idc_dialog_title_set_scene, hive.dialog_title.set_scene);
+			set_text(idc_dialog_title_set_layer_name, hive.dialog_title.set_layer_name);
 
 			return TRUE;
 		}
@@ -75,10 +75,10 @@ namespace apn::preset_adder
 
 			if (is_locked()) return FALSE;
 
-			get_text(idc_dialog_name_new_project, hive.dialog_name.new_project);
-			get_text(idc_dialog_name_new_scene, hive.dialog_name.new_scene);
-			get_text(idc_dialog_name_set_scene, hive.dialog_name.set_scene);
-			get_text(idc_dialog_name_set_layer_name, hive.dialog_name.set_layer_name);
+			get_text(idc_dialog_title_new_project, hive.dialog_title.new_project);
+			get_text(idc_dialog_title_new_scene, hive.dialog_title.new_scene);
+			get_text(idc_dialog_title_set_scene, hive.dialog_title.set_scene);
+			get_text(idc_dialog_title_set_layer_name, hive.dialog_title.set_layer_name);
 
 			return TRUE;
 		}
@@ -101,6 +101,24 @@ namespace apn::preset_adder
 				{
 					break;
 				}
+			case WM_INITDIALOG:
+				{
+					// スコープ終了時(デフォルト処理の後)に実行します。
+					my::scope_exit scope_exit([&]()
+					{
+						// 子ウィンドウを列挙します。
+						::EnumChildWindows(hwnd, [](HWND child, LPARAM l_param) -> BOOL
+						{
+							// 子ウィンドウを翻訳します。
+							::SetWindowTextW(child, tr(my::get_window_text(child)));
+
+							return TRUE;
+						},
+						0);
+					});
+
+					return __super::on_wnd_proc(hwnd, message, w_param, l_param);
+				}
 			case WM_COMMAND:
 				{
 					// ロックされている場合はWM_COMMANDを処理しません。
@@ -112,10 +130,10 @@ namespace apn::preset_adder
 
 					switch (control_id)
 					{
-					case idc_dialog_name_new_project:
-					case idc_dialog_name_new_scene:
-					case idc_dialog_name_set_scene:
-					case idc_dialog_name_set_layer_name:
+					case idc_dialog_title_new_project:
+					case idc_dialog_title_new_scene:
+					case idc_dialog_title_set_scene:
+					case idc_dialog_title_set_layer_name:
 						if (code == EN_UPDATE) from_ui(); break;
 					}
 

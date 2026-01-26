@@ -43,6 +43,7 @@ using namespace Gdiplus;
 #include <psapi.h>
 
 #include "aviutl2_sdk/plugin2.h"
+#include "aviutl2_sdk/config2.h"
 #include "nlohmann/json.hpp"
 #include "detours/detours.h"
 #pragma comment(lib, "detours/detours.lib")

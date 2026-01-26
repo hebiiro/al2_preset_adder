@@ -3,13 +3,31 @@
 namespace apn::preset_adder
 {
 	//
-	// 指定された文字列が指定された正規表現パターンにマッチする場合はTRUEを返します。
+	// 指定された文字列を翻訳して返します。
 	//
-	inline BOOL match(const std::wstring& text, const std::wstring& pattern)
+	inline LPCWSTR tr(const std::wstring& text)
 	{
-		if (pattern.empty()) return FALSE;
+		return hive.aviutl2.config->translate(hive.aviutl2.config, text.c_str());
+	}
 
-		return std::regex_search(text, std::wregex(pattern));
+	//
+	// 指定された文字列を翻訳して返します。
+	//
+	inline LPCWSTR tr(const std::wstring& section, const std::wstring& text)
+	{
+		return hive.aviutl2.config->get_language_text(hive.aviutl2.config, section.c_str(), text.c_str());
+	}
+
+	//
+	// 指定されたダイアログのタイトルがマッチする場合はTRUEを返します。
+	//
+	inline BOOL match(const std::wstring& window_name, const std::wstring& raw_title)
+	{
+		// ダイアログのタイトルを翻訳します。
+		auto title = tr(L"Dialog", raw_title);
+
+		// タイトルの比較結果を返します。
+		return window_name == title;
 	};
 
 	//

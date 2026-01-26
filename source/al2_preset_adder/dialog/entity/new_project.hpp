@@ -64,9 +64,9 @@ namespace apn::preset_adder::dialog
 			{
 				auto window_name = my::get_window_text(hwnd);
 
-				if (match(window_name, hive.dialog_name.new_project)) return TRUE;
-				if (match(window_name, hive.dialog_name.new_scene)) return TRUE;
-				if (match(window_name, hive.dialog_name.set_scene)) return TRUE;
+				if (match(window_name, hive.dialog_title.new_project)) return TRUE;
+				if (match(window_name, hive.dialog_title.new_scene)) return TRUE;
+				if (match(window_name, hive.dialog_title.set_scene)) return TRUE;
 
 				return FALSE;
 			};
