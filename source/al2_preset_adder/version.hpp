@@ -11,6 +11,6 @@ namespace apn::preset_adder
 		//
 		const std::wstring name = L"プリセット追加MOD";
 		const std::wstring information = L"🐍" + name + L"🔖";
-		const std::wstring revision = L"r1";
+		const std::wstring revision = L"r2";
 	} version;
 }
