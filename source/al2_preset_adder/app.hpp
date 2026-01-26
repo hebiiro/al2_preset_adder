@@ -8,11 +8,6 @@ namespace apn::preset_adder
 	inline struct app_t : app_interface_t
 	{
 		//
-		// コンストラクタです。
-		//
-		app_t() { app = this; }
-
-		//
 		// dllの初期化処理を実行します。
 		//
 		virtual BOOL dll_init() override
@@ -20,11 +15,11 @@ namespace apn::preset_adder
 			MY_TRACE_FUNC("");
 
 			// 各種開始処理を実行します。
+			config_io.init();
 			table::manager.init();
 			dialog::manager.init();
 			hook::manager.init();
 			config_dialog.init();
-			config_io.init();
 
 			// コンフィグをファイルから読み込みます。
 			config_io.read();
@@ -43,11 +38,11 @@ namespace apn::preset_adder
 			config_io.write();
 
 			// 各種終了処理を実行します。
-			config_io.exit();
 			config_dialog.exit();
 			hook::manager.exit();
 			dialog::manager.exit();
 			table::manager.exit();
+			config_io.exit();
 
 			return TRUE;
 		}
