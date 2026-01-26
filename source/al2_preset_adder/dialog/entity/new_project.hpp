@@ -225,10 +225,10 @@ namespace apn::preset_adder::dialog
 					};
 
 					retrofit.preset_stc = create_control(
-						WC_STATICW, L"プリセット", SS_CENTERIMAGE, readymade.video_size_stc->rc.left, y, base.cx, base.cy);
+						WC_STATICW, tr(L"プリセット"), SS_CENTERIMAGE, readymade.video_size_stc->rc.left, y, base.cx, base.cy);
 					retrofit.preset = create_combobox(readymade.video_width->rc.left, y, base.cx, base.cy);
 					retrofit.swap_video_size = create_control(
-						WC_BUTTONW, L"縦横反転", BS_AUTOCHECKBOX, x, y, base.cx, base.cy);
+						WC_BUTTONW, tr(L"縦横反転"), BS_AUTOCHECKBOX, x, y, base.cx, base.cy);
 					if (readymade.name_stc)
 						retrofit.name_preset = create_combobox(x, readymade.name_stc->rc.top + offset.cy, base.cx, base.cy);
 					retrofit.video_size_preset = create_combobox(x, readymade.video_size_stc->rc.top + offset.cy, base.cx, base.cy);
@@ -241,7 +241,7 @@ namespace apn::preset_adder::dialog
 						auto x = client_rc.right + offset.cx - (w + space.cx * 2);
 						auto y = client_rc.bottom + offset.cy - (h + space.cy * 2);
 
-						retrofit.cancel = create_control(WC_BUTTONW, L"キャンセル", BS_PUSHBUTTON, x, y, w, h);
+						retrofit.cancel = create_control(WC_BUTTONW, tr(L"Dialog", L"キャンセル"), BS_PUSHBUTTON, x, y, w, h);
 					}
 
 					//

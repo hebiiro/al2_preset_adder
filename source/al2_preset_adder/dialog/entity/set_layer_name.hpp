@@ -165,9 +165,9 @@ namespace apn::preset_adder::dialog
 							client_rc.bottom + offset.cy - button_size.cy,
 						};
 
-						retrofit.cancel = create_control(WC_BUTTONW, L"キャンセル", BS_PUSHBUTTON, button_pos.x, button_pos.y, button_size.cx, button_size.cy);
+						retrofit.cancel = create_control(WC_BUTTONW, tr(L"Dialog", L"キャンセル"), BS_PUSHBUTTON, button_pos.x, button_pos.y, button_size.cx, button_size.cy);
 						button_pos.x -= button_size.cx + space.cx;
-						retrofit.ok = create_control(WC_BUTTONW, L"OK", BS_DEFPUSHBUTTON, button_pos.x, button_pos.y, button_size.cx, button_size.cy);
+						retrofit.ok = create_control(WC_BUTTONW, tr(L"Dialog", L"OK"), BS_DEFPUSHBUTTON, button_pos.x, button_pos.y, button_size.cx, button_size.cy);
 					}
 
 					//

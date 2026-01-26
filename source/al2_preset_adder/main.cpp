@@ -94,9 +94,10 @@ namespace apn::preset_adder
 	//
 	EXTERN_C void RegisterPlugin(HOST_APP_TABLE* host)
 	{
-		host->set_plugin_information(version.information.c_str());
+		host->set_plugin_information(my::format(L"{/}{/}",
+			tr(version.information), version.revision).c_str());
 
-		host->register_window_client(version.name.c_str(), hive.plugin_window);
+		host->register_window_client(tr(version.name), hive.plugin_window);
 	}
 
 	//
