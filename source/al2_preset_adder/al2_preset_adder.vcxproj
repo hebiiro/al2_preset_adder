@@ -59,23 +59,23 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\common.props" />
-    <Import Project="..\al2.props" />
+    <Import Project="..\..\..\common.props" />
+    <Import Project="..\..\..\al2.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\common.props" />
-    <Import Project="..\al2.props" />
+    <Import Project="..\..\..\common.props" />
+    <Import Project="..\..\..\al2.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\common.props" />
-    <Import Project="..\al2.props" />
+    <Import Project="..\..\..\common.props" />
+    <Import Project="..\..\..\al2.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\common.props" />
-    <Import Project="..\al2.props" />
+    <Import Project="..\..\..\common.props" />
+    <Import Project="..\..\..\al2.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -155,6 +155,7 @@
     <ClInclude Include="app_interface.hpp" />
     <ClInclude Include="config_dialog.hpp" />
     <ClInclude Include="config_io.hpp" />
+    <ClInclude Include="debug.hpp" />
     <ClInclude Include="dialog\entity\new_project.hpp" />
     <ClInclude Include="dialog\entity\set_layer_name.hpp" />
     <ClInclude Include="dialog\manager.hpp" />
@@ -162,8 +163,6 @@
     <ClInclude Include="hook\entry.hpp" />
     <ClInclude Include="hook\entry\call_wnd_proc_ret.hpp" />
     <ClInclude Include="hook\manager.hpp" />
-    <ClInclude Include="io_base.hpp" />
-    <ClInclude Include="lockable.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="table\entry.hpp" />
@@ -188,10 +187,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\CONTRIBUTING.md" />
+    <None Include="..\..\CREDITS.md" />
+    <None Include="..\..\LICENSE" />
+    <None Include="..\..\README.md" />
     <None Include="main.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="al2_preset_adder.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

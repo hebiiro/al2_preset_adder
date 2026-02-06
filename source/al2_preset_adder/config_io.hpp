@@ -5,48 +5,8 @@ namespace apn::preset_adder
 	//
 	// このクラスはコンフィグの入出力を担当します。
 	//
-	inline struct config_io_t : io_base_t
+	inline struct config_io_t : config_io_base2_t
 	{
-		//
-		// 初期化処理を実行します。
-		//
-		BOOL init()
-		{
-			MY_TRACE_FUNC("");
-
-			auto module_file_path = my::get_module_file_name(hive.instance);
-			auto config_folder_path = module_file_path.parent_path() / L"config";
-
-			path = hive.config_file_name = config_folder_path /
-				module_file_path.filename().replace_extension(L".json");
-			MY_TRACE_STR(hive.config_file_name);
-
-			// コンフィグフォルダを作成しておきます。
-			try { std::filesystem::create_directories(config_folder_path); } catch (...) {}
-
-			return TRUE;
-		}
-
-		//
-		// 後始末処理を実行します。
-		//
-		BOOL exit()
-		{
-			MY_TRACE_FUNC("");
-
-			return TRUE;
-		}
-
-		//
-		// 更新処理を実行します。
-		//
-		BOOL update()
-		{
-			MY_TRACE_FUNC("");
-
-			return config_dialog.to_ui();
-		}
-
 		//
 		// ノードからダイアログ名の設定を読み込みます。
 		//
@@ -86,7 +46,7 @@ namespace apn::preset_adder
 
 			read_dialog_title(root);
 
-			return TRUE;
+			return __super::read_node(root);
 		}
 
 		//
@@ -98,7 +58,7 @@ namespace apn::preset_adder
 
 			write_dialog_title(root);
 
-			return TRUE;
+			return __super::write_node(root);
 		}
 	} config_io;
 }

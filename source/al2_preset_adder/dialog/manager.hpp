@@ -10,7 +10,7 @@ namespace apn::preset_adder::dialog
 		//
 		// このクラスはダイアログのエンティティのベースクラスです。
 		//
-		struct entity_base_t : my::Window, lockable_t, std::enable_shared_from_this<entity_base_t>
+		struct entity_base_t : my::Window, my::lockable_t, std::enable_shared_from_this<entity_base_t>
 		{
 		};
 

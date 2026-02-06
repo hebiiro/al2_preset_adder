@@ -19,20 +19,17 @@ namespace apn::preset_adder::table
 		{
 			MY_TRACE_FUNC("");
 
-			// 基準となるモジュールファイルのパスを取得します。
-			auto base_path = my::get_module_file_name(hive.instance);
+			// 基準となるパスを取得します。
+			base_path_t base;
 
 			// テーブルフォルダのパスを取得します。
-			dir = base_path.parent_path() / L"config" / base_path.stem();
-
-			// テーブルフォルダを作成しておきます。
-			try { std::filesystem::create_directories(dir); } catch (...) {}
+			dir = base.config_dir;
 
 			// アセットフォルダからコンフィグフォルダにファイルをコピーします。
 			// ただし、上書きはしません。既存のファイルを優先します。
 			{
-				auto from = base_path.parent_path() / L"assets" / base_path.stem();
-				auto to = dir;
+				auto from = base.assets_dir;
+				auto to = base.config_dir;
 
 				entry_t::copy_file(from, to);
 			}

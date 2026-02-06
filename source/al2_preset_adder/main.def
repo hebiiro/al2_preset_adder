@@ -1,5 +1,5 @@
 ﻿EXPORTS
+	InitializeConfig
 	InitializePlugin
 	UninitializePlugin
-	RegisterPlugin
-	InitializeConfig
+	GetInputPluginTable

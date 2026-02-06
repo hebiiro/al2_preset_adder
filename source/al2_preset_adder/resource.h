@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
-// al2_preset_adder.rc で使用
+// resource.rc で使用
 //
 #define idd_config                      100
 #define idc_dialog_title_new_project_stc 10000

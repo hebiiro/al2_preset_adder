@@ -2,9 +2,9 @@
 #include "resource.h"
 #include "version.hpp"
 #include "app_interface.hpp"
-#include "lockable.hpp"
 #include "hive.hpp"
 #include "utils.hpp"
+#include "debug.hpp"
 #include "table/reader.hpp"
 #include "table/entry.hpp"
 #include "table/manager.hpp"
@@ -21,7 +21,6 @@
 #include "hook/manager.hpp"
 #include "hook/entry/call_wnd_proc_ret.hpp"
 #include "config_dialog.hpp"
-#include "io_base.hpp"
 #include "config_io.hpp"
 #include "app.hpp"
 
@@ -53,27 +52,20 @@ namespace apn::preset_adder
 	}
 
 	//
+	// aviutl2のコンフィグを取得します。
+	//
+	EXTERN_C void InitializeConfig(CONFIG_HANDLE* config)
+	{
+		hive.aviutl2.config = config;
+	}
+
+	//
 	// プラグインDLL初期化関数です。
 	//
 	EXTERN_C bool InitializePlugin(DWORD version)
 	{
 		if (version < 2003000) return false;
-#ifdef _DEBUG
-		// デバッグ用のコードです。
-		{
-			if (0)
-			{
-				// カスタムロガーを設定します。
-				static struct Logger : my::Tracer::Logger {
-					virtual void output(LPCTSTR raw, LPCTSTR text) override {
-						// SHIFTキーが押されているときだけログを出力します。
-						if (::GetKeyState(VK_SHIFT) < 0) ::OutputDebugString(text);
-					}
-				} logger;
-				my::Tracer::logger = &logger;
-			}
-		}
-#endif
+
 		app->dll_init();
 
 		return true;
@@ -90,21 +82,13 @@ namespace apn::preset_adder
 	}
 
 	//
-	// プラグイン登録関数です。
+	// 入力プラグインの構造体を返します。
 	//
-	EXTERN_C void RegisterPlugin(HOST_APP_TABLE* host)
+	EXTERN_C INPUT_PLUGIN_TABLE* GetInputPluginTable()
 	{
-		host->set_plugin_information(my::format(L"{/}{/}",
-			tr(version.information), version.revision).c_str());
+		// 入力プラグインの構造体を自動的に構築します。
+		static input_plugin_table_t input_plugin_table;
 
-		host->register_window_client(tr(version.name), hive.plugin_window);
-	}
-
-	//
-	// aviutl2のコンフィグを取得します。
-	//
-	EXTERN_C void InitializeConfig(CONFIG_HANDLE* config)
-	{
-		hive.aviutl2.config = config;
+		return &input_plugin_table;
 	}
 }

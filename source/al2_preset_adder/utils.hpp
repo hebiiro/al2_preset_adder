@@ -3,22 +3,6 @@
 namespace apn::preset_adder
 {
 	//
-	// 指定された文字列を翻訳して返します。
-	//
-	inline LPCWSTR tr(const std::wstring& text)
-	{
-		return hive.aviutl2.config->translate(hive.aviutl2.config, text.c_str());
-	}
-
-	//
-	// 指定された文字列を翻訳して返します。
-	//
-	inline LPCWSTR tr(const std::wstring& section, const std::wstring& text)
-	{
-		return hive.aviutl2.config->get_language_text(hive.aviutl2.config, section.c_str(), text.c_str());
-	}
-
-	//
 	// 指定されたダイアログのタイトルがマッチする場合はTRUEを返します。
 	//
 	inline BOOL match(const std::wstring& window_name, const std::wstring& raw_title)

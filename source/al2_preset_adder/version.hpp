@@ -5,12 +5,10 @@ namespace apn::preset_adder
 	//
 	// このクラスはこのプログラムのバージョンを管理します。
 	//
-	inline struct version_t {
+	inline struct version_t : version_base_t {
 		//
-		// プラグイン名とプラグイン情報です。
+		// コンストラクタです。
 		//
-		const std::wstring name = L"プリセット追加MOD";
-		const std::wstring information = L"🐍" + name + L"🔖";
-		const std::wstring revision = L"r2";
+		version_t() : version_base_t(L"プリセット追加MOD", L"🐍プリセット追加MOD🔖", L"r3") {}
 	} version;
 }

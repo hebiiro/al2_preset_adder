@@ -227,7 +227,7 @@ namespace apn::preset_adder::dialog
 					// スコープ終了時(デフォルト処理の後)に実行します。
 					my::scope_exit scope_exit([&]()
 					{
-						locker_t locker(this);
+						my::locker_t locker(this);
 
 						if (init_controls(hwnd))
 							arrange_controls(hwnd);
@@ -249,7 +249,7 @@ namespace apn::preset_adder::dialog
 					// ロックされている場合は何もしません。
 					if (is_locked()) break;
 
-					locker_t locker(this);
+					my::locker_t locker(this);
 
 //					auto control_id = LOWORD(w_param);
 					auto code = HIWORD(w_param);

@@ -14,12 +14,16 @@ namespace apn::preset_adder
 		{
 			MY_TRACE_FUNC("");
 
+			// 最初にaviutl2ウィンドウを捕捉します。
+			catch_aviutl2_window();
+
 			// 各種開始処理を実行します。
+			debug.init();
 			config_io.init();
 			table::manager.init();
 			dialog::manager.init();
 			hook::manager.init();
-			config_dialog.init();
+			config_dialog.init(idd_config);
 
 			// コンフィグをファイルから読み込みます。
 			config_io.read();
@@ -34,15 +38,13 @@ namespace apn::preset_adder
 		{
 			MY_TRACE_FUNC("");
 
-			// コンフィグをファイルに書き込みます。
-			config_io.write();
-
 			// 各種終了処理を実行します。
 			config_dialog.exit();
 			hook::manager.exit();
 			dialog::manager.exit();
 			table::manager.exit();
 			config_io.exit();
+			debug.exit();
 
 			return TRUE;
 		}
