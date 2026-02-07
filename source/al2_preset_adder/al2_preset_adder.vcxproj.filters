@@ -129,4 +129,9 @@
       <Filter>resource</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\package.txt">
+      <Filter>_root</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

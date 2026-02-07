@@ -1,14 +1,9 @@
-﻿# 🎉AviUtl2プリセット追加MOD
+﻿# 🐍AviUtl2 プリセット追加MOD
 
 * aviutl2の`プロジェクトを新規作成`ダイアログなどにプリセットを追加するMODです。
-* aviutl2の汎用プラグインの形式になっていますが、実際には見た目を変えるタイプのMODです。
+* aviutl2の入力プラグインの形式になっていますが、実際には見た目を変えるタイプのMODです。
 
 !["スクリーンショット"](images/r1.png)
-
-## 🚧注意事項
-
-* `データフォルダ`とは`C:\ProgramData\aviutl2`または`aviutl2.exeがあるフォルダ\data`のことです。
-* `プラグインフォルダ`とは`データフォルダ\Plugin`のことです。
 
 > [!IMPORTANT]
 > * aviutl2 beta30以降でのみ動作します。
@@ -21,37 +16,22 @@
 
 * `プラグインフォルダ`に以下のファイルを入れてください。
 	* `al2` ✏️フォルダ
-		* `al2_preset_adder.aux2` ✏️汎用プラグインファイル
-		* `assets` ✏️フォルダ
-			* `al2_preset_adder` ✏️フォルダ(ここにプリセットの初期値が入っています)
+		* `al2_preset_adder.aui2` ✏️入力プラグインファイル
+		* `al2_preset_adder` ✏️フォルダ
+			* `assets` ✏️フォルダ(ここにプリセットの初期値が入っています)
 				* `project.tsv` ✏️プロジェクトのプリセット
 				* `video_size.tsv` ✏️映像サイズのプリセット
 				* `video_rate.tsv` ✏️フレームレートのプリセット
 				* `audio_rate.tsv` ✏️サンプリングレートのプリセット
 				* `scene_name.tsv` ✏️シーン名のプリセット
 				* `layer_name.tsv` ✏️レイヤー名のプリセット
-* (上記ファイルは`al2_preset_adder.au2pkg.zip`ファイル内の`Plugin`フォルダに入っています)
 
-## 🚀自動インストール
-
-* `al2_preset_adder.au2pkg.zip`ファイルをaviutl2のプレビュー画面にD&Dしてください。
-* このとき「`al2`フォルダが使用中です」のようなダイアログが表示された場合は「スキップ」を選択してください。
-
-## 🔥簡易アンインストール
+## 🔥アンインストール
 
 * `プラグインフォルダ`から以下のファイルを削除してください。
 	* `al2` ✏️フォルダ
-		* `al2_preset_adder.aux2` ✏️これを削除
-
-## 🔥完全アンインストール
-
-* 設定やアセットまですべて消す場合は、`プラグインフォルダ`から以下のファイルも削除してください。
-	* `al2` ✏️フォルダ
-		* `assets` ✏️フォルダ
-			* `al2_preset_adder` ✏️このフォルダを削除
-		* `config` ✏️フォルダ
-			* `al2_preset_adder.json` ✏️このファイルを削除
-			* `al2_preset_adder` ✏️このフォルダを削除
+		* `al2_preset_adder.aui2` ✏️このファイルを削除
+		* `al2_preset_adder` ✏️このフォルダを削除
 
 ## 💡使い方
 
@@ -74,15 +54,16 @@
 			* `al2_preset_adder.json` ✏️このファイルを削除
 			* `al2_preset_adder` ✏️このフォルダを削除
 
-## 🔧設定
+## 🔧設定項目
 
-* `プリセット追加MOD`ウィンドウで設定します。
----
 * `ダイアログのタイトル名` ✏️各ダイアログのタイトル名を指定します。
 	* aviutl2のバージョンアップによってタイトル名が変更された場合はそれに合わせて変更してください。
 	* 特定のダイアログを除外したい場合は、先頭に`x`などを入れて意図的にマッチしないようにしてください。
 
 ## 🔖更新履歴
+
+* 🔖r3 #2026年02月07日
+	* 🚚サブモジュール化
 
 * 🔖r2 #2026年01月26日
 	* 🚚フォルダ構造を変更
@@ -90,23 +71,3 @@
 
 * 🔖r1 #2026年01月23日
 	* 🎉初版
-
-## ⚗️動作確認
-
-* AviUtl ExEdit2 beta30a https://spring-fragrance.mints.ne.jp/aviutl/
-
-## 💳クレジット
-
-* AviUtl ExEdit2 Plugin SDK https://spring-fragrance.mints.ne.jp/aviutl/
-* Microsoft Research Detours Package https://github.com/microsoft/Detours
-* JSON for Modern C++ https://github.com/nlohmann/json
-
-## 👽️作成者情報
- 
-* 作成者 - 蛇色 (へびいろ)
-* GitHub - https://github.com/hebiiro
-* X - https://x.com/io_hebiiro
-
-## 🚨免責事項
-
-この作成物および同梱物を使用したことによって生じたすべての障害・損害・不具合等に関しては、私と私の関係者および私の所属するいかなる団体・組織とも、一切の責任を負いません。各自の責任においてご使用ください。
