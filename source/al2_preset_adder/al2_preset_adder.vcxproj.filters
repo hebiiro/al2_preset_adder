@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="resource">
+    <Filter Include="_">
+      <UniqueIdentifier>{acf161af-d5ce-428e-960e-54e582e417c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_\root">
+      <UniqueIdentifier>{22e16ff3-84e4-4313-a07f-493f1798531b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_\resource">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="framework">
-      <UniqueIdentifier>{acf161af-d5ce-428e-960e-54e582e417c1}</UniqueIdentifier>
+    <Filter Include="table">
+      <UniqueIdentifier>{d2ba0f9e-352d-4e56-91be-736972054556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="table\entry">
+      <UniqueIdentifier>{6223b553-db5b-4448-bc9b-3e36de02e739}</UniqueIdentifier>
     </Filter>
     <Filter Include="hook">
       <UniqueIdentifier>{30abf42e-1783-448f-8e93-06e73f57b0ac}</UniqueIdentifier>
@@ -20,19 +29,10 @@
     <Filter Include="dialog\entity">
       <UniqueIdentifier>{daa04716-1d09-4a9b-904f-d77203d4453a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="table">
-      <UniqueIdentifier>{d2ba0f9e-352d-4e56-91be-736972054556}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="table\entry">
-      <UniqueIdentifier>{6223b553-db5b-4448-bc9b-3e36de02e739}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_root">
-      <UniqueIdentifier>{22e16ff3-84e4-4313-a07f-493f1798531b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>framework</Filter>
+      <Filter>_</Filter>
     </ClInclude>
     <ClInclude Include="app.hpp" />
     <ClInclude Include="app_interface.hpp" />
@@ -40,7 +40,7 @@
     <ClInclude Include="hive.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="version.hpp">
-      <Filter>framework</Filter>
+      <Filter>_</Filter>
     </ClInclude>
     <ClInclude Include="hook\entry.hpp">
       <Filter>hook</Filter>
@@ -89,49 +89,44 @@
     </ClInclude>
     <ClInclude Include="config_dialog.hpp" />
     <ClInclude Include="resource.h">
-      <Filter>resource</Filter>
+      <Filter>_\resource</Filter>
     </ClInclude>
     <ClInclude Include="debug.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>framework</Filter>
+      <Filter>_</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>framework</Filter>
+      <Filter>_</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="main.def">
-      <Filter>framework</Filter>
+      <Filter>_</Filter>
     </None>
     <None Include="..\..\CONTRIBUTING.md">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
     <None Include="..\..\CREDITS.md">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
     <None Include="..\..\README.md">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
     <None Include="..\..\.gitattributes">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
     <None Include="..\..\.gitignore">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
     <None Include="..\..\LICENSE">
-      <Filter>_root</Filter>
+      <Filter>_\root</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
-      <Filter>resource</Filter>
+      <Filter>_\resource</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\package.txt">
-      <Filter>_root</Filter>
-    </Text>
   </ItemGroup>
 </Project>
