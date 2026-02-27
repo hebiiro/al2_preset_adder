@@ -201,6 +201,7 @@
   <ItemGroup>
     <None Include="..\..\.gitattributes" />
     <None Include="..\..\.gitignore" />
+    <None Include="..\..\au2pkg\Language\Template\al2_preset_adder.aul2" />
     <None Include="..\..\CONTRIBUTING.md" />
     <None Include="..\..\CREDITS.md" />
     <None Include="..\..\LICENSE" />
@@ -209,6 +210,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\au2pkg\package.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

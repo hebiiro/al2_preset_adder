@@ -29,6 +29,15 @@
     <Filter Include="dialog\entity">
       <UniqueIdentifier>{daa04716-1d09-4a9b-904f-d77203d4453a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_\root\au2pkg">
+      <UniqueIdentifier>{9c06eacc-c2a1-4186-9fa1-d740dd3fab88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_\root\au2pkg\Language">
+      <UniqueIdentifier>{1fadaadf-2159-491d-9579-322508f542b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_\root\au2pkg\Language\Template">
+      <UniqueIdentifier>{625e2406-20f2-4658-abd1-72fb740523e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -123,10 +132,18 @@
     <None Include="..\..\LICENSE">
       <Filter>_\root</Filter>
     </None>
+    <None Include="..\..\au2pkg\Language\Template\al2_preset_adder.aul2">
+      <Filter>_\root\au2pkg\Language\Template</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
       <Filter>_\resource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\au2pkg\package.txt">
+      <Filter>_\root\au2pkg</Filter>
+    </Text>
   </ItemGroup>
 </Project>
