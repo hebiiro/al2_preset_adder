@@ -1,5 +1,0 @@
-﻿**下記URLにあるREADME(使い方など)をよく読みながら使用してください。**
-🐍AviUtl2プラグイン総合
-https://github.com/hebiiro/al2
-🐍AviUtl2 プリセット追加MOD 🔖r3 #2026年02月07日
-https://github.com/hebiiro/al2_preset_adder/tree/release/3
