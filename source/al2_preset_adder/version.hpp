@@ -9,6 +9,6 @@ namespace apn::preset_adder
 		//
 		// コンストラクタです。
 		//
-		version_t() : version_base_t(L"プリセット追加MOD", L"🐍プリセット追加MOD🔖", L"r4") {}
+		version_t() : version_base_t(L"プリセット追加MOD", L"🐍プリセット追加MOD🔖", L"r5") {}
 	} version;
 }
