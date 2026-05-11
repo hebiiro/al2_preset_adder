@@ -35,6 +35,8 @@ namespace apn::preset_adder::dialog
 			element_t output_size_stc, output_width, output_height;
 			element_t output_audio_stc, output_audio;
 			element_t tip_stc;
+			element_t horz_border_2;
+			element_t preset, add_preset;
 			element_t ok;
 		} readymade = {};
 
@@ -93,6 +95,9 @@ namespace apn::preset_adder::dialog
 				// thisポインタを取得します。
 				auto p = (new_project_t*)l_param;
 
+				// 直接の子ウィンドウではない場合は除外します。
+				if (::GetParent(child) != *p) return TRUE;
+
 				// 既存のコントロールの矩形を取得します。
 				auto rc = my::get_window_rect(child);
 				my::map_window_points(nullptr, *p, &rc);
@@ -105,14 +110,14 @@ namespace apn::preset_adder::dialog
 			(LPARAM)this);
 
 			// 既存のコントロールの数が無効の場合は失敗します。
-			if (controls.size() < 13) return FALSE;
+			if (controls.size() < sizeof(readymade) / sizeof(readymade.ok) - 2) return FALSE;
 
 			{
 				// コントロールのインデックスです。
 				auto index = size_t {};
 
 				// 基準となるコントロールを取得します。
-				const auto& control = controls[2];
+				const auto& control = controls[1];
 
 				// 基準となるコントロールのクラス名を取得します。
 				auto class_name = my::get_class_name(control);
@@ -120,14 +125,14 @@ namespace apn::preset_adder::dialog
 				// 基準となるコントロールがエディットボックスの場合は
 				if (::lstrcmpiW(class_name.c_str(), WC_EDITW) == 0)
 				{
-					// 「プロジェクトを新規作成」または(出力時の)「シーンの設定」ダイアログです。
-				}
-				else
-				{
 					// 「シーンを新規作成」または(通常の)「シーンの設定」ダイアログです。
 
 					readymade.name_stc = &controls[index++];
 					readymade.name = &controls[index++];
+				}
+				else
+				{
+					// 「プロジェクトを新規作成」または(出力時の)「シーンの設定」ダイアログです。
 				}
 
 				readymade.video_size_stc = &controls[index++];
@@ -147,6 +152,9 @@ namespace apn::preset_adder::dialog
 				readymade.output_audio_stc = &controls[index++];
 				readymade.output_audio = &controls[index++];
 				readymade.tip_stc = &controls[index++];
+				readymade.horz_border_2 = &controls[index++];
+				readymade.preset = &controls[index++];
+				readymade.add_preset = &controls[index++];
 				readymade.ok = &controls.back();
 			}
 
