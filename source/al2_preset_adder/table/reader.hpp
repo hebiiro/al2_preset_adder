@@ -30,9 +30,6 @@ namespace apn::preset_adder::table
 
 			try
 			{
-				// 現在のセクションです。
-				auto section = std::wstring {};
-
 				// ファイルストリームを開きます。
 				std::ifstream stream(path);
 				if (!stream) return FALSE;

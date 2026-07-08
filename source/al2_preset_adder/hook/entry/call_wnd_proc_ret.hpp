@@ -36,9 +36,9 @@ namespace apn::preset_adder::hook
 		//
 		// WH_CALLWNDPROCRETのフックプロシージャです。
 		//
-		static LRESULT CALLBACK win_hook_proc(int code, WPARAM wParam, LPARAM lParam)
+		static LRESULT CALLBACK win_hook_proc(int code, WPARAM w_param, LPARAM l_param)
 		{
-			auto cs = (CWPRETSTRUCT*)lParam;
+			auto cs = (CWPRETSTRUCT*)l_param;
 #ifdef _DEBUG
 			if (0)
 			{
@@ -46,13 +46,13 @@ namespace apn::preset_adder::hook
 
 				auto hwnd = cs->hwnd;
 				auto message = cs->message;
-				auto wParam = cs->wParam;
-				auto lParam = cs->lParam;
-				auto lResult = cs->lResult;
+				auto w_param = cs->wParam;
+				auto l_param = cs->lParam;
+				auto l_result = cs->lResult;
 				auto class_name = my::get_class_name(hwnd);
 
-				MY_TRACE_FUNC("{/hex}, {/hex}, {/hex}, {/hex}, {/} => {/hex}",
-					hwnd, message, wParam, lParam, class_name, lResult);
+				MY_TRACE_FUNC("{/hex}, {/}, {/hex}, {/hex}, {/} => {/hex}",
+					hwnd, my::message_to_string(message), w_param, l_param, class_name, l_result);
 			}
 #endif
 			switch (cs->message)
@@ -80,7 +80,7 @@ namespace apn::preset_adder::hook
 				}
 			}
 
-			return ::CallNextHookEx(nullptr, code, wParam, lParam);
+			return ::CallNextHookEx(nullptr, code, w_param, l_param);
 		}
 	} cwpr;
 }
