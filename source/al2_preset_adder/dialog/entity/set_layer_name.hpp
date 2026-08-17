@@ -65,6 +65,9 @@ namespace apn::preset_adder::dialog
 				// thisポインタを取得します。
 				auto p = (set_layer_name_t*)l_param;
 
+				// 直接の子ウィンドウではない場合は除外します。
+				if (::GetParent(child) != *p) return TRUE;
+
 				// 既存のコントロールの矩形を取得します。
 				auto rc = my::get_window_rect(child);
 				my::map_window_points(nullptr, *p, &rc);
@@ -72,6 +75,7 @@ namespace apn::preset_adder::dialog
 				// 既存のコントロールをコレクションに追加します。
 				p->controls.emplace_back(child, rc);
 
+				// 列挙を続けます。
 				return TRUE;
 			},
 			(LPARAM)this);

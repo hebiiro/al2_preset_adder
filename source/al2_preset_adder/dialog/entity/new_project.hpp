@@ -105,6 +105,7 @@ namespace apn::preset_adder::dialog
 				// 既存のコントロールをコレクションに追加します。
 				p->controls.emplace_back(child, rc);
 
+				// 列挙を続けます。
 				return TRUE;
 			},
 			(LPARAM)this);
