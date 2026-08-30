@@ -10,34 +10,60 @@ namespace apn::preset_adder::dialog
 		//
 		// このクラスは既存のコントロールです。
 		//
-		struct control_t {
-			HWND hwnd;
-			RECT rc;
-			operator HWND() const { return hwnd; }
-		};
+		struct readymade_t
+		{
+			//
+			// このクラスはコントロールです。
+			//
+			struct control_t
+			{
+				//
+				// ウィンドウハンドルです。
+				//
+				HWND hwnd;
 
-		//
-		// 既存のコントロールのコレクションです。
-		//
-		std::vector<control_t> controls;
+				//
+				// 元のコントロール矩形です。
+				//
+				RECT rc;
 
-		//
-		// 既存のコントロールです。
-		//
-		struct readymade_t {
-			using element_t = const control_t*;
-			element_t name_stc, name;
-			element_t video_size_stc, video_width, video_height;
-			element_t video_rate_stc, video_rate;
-			element_t audio_rate_stc, audio_rate;
-			element_t background_color_stc, background_color, background_color_picker;
-			element_t horz_border;
-			element_t output_size_stc, output_width, output_height;
-			element_t output_audio_stc, output_audio;
-			element_t tip_stc;
-			element_t horz_border_2;
-			element_t preset, add_preset;
-			element_t ok;
+				//
+				// デフォルトコンストラクタです。
+				//
+				control_t() {}
+
+				//
+				// コンストラクタです。
+				//
+				control_t(HWND parent, HWND hwnd)
+					: hwnd(hwnd)
+				{
+					rc = my::get_window_rect(hwnd);
+					my::map_window_points(nullptr, parent, &rc);
+				}
+
+				//
+				// HWNDを返します。
+				//
+				operator HWND() const { return hwnd; }
+			};
+
+			control_t name_stc, name;
+			control_t video_size_stc, video_width, video_height;
+			control_t video_rate_stc, video_rate;
+			control_t audio_rate_stc, audio_rate;
+/*
+			control_t background_color_stc, background_color, background_color_picker;
+			control_t horz_border;
+*/
+			control_t output_size_stc, output_width, output_height;
+/*
+			control_t output_audio_stc, output_audio;
+			control_t tip_stc;
+			control_t horz_border_2;
+			control_t preset, add_preset;
+*/
+			control_t ok;
 		} readymade = {};
 
 		//
@@ -55,10 +81,13 @@ namespace apn::preset_adder::dialog
 		} retrofit = {};
 
 		//
-		// 初期化処理です。
+		// ダイアログをサブクラス化します。
 		//
 		virtual BOOL subclass(HWND hwnd) override
 		{
+			// shiftキーが押されている場合は何もしません。
+			if (::GetKeyState(VK_SHIFT) < 0) return FALSE;
+
 			//
 			// この関数は指定されたウィンドウが対象ではない場合はFALSEを返します。
 			//
@@ -76,6 +105,7 @@ namespace apn::preset_adder::dialog
 			// 指定されたウィンドウが対象ではない場合は失敗します。
 			if (!is_target(hwnd)) return FALSE;
 
+			// ダイアログをサブクラス化します。
 			return __super::subclass(hwnd);
 		}
 
@@ -86,78 +116,46 @@ namespace apn::preset_adder::dialog
 		{
 			MY_TRACE_FUNC("{/hex}", hwnd);
 
-			// 既存のコントロールを列挙します。
-			::EnumChildWindows(hwnd,
-				[](HWND child, LPARAM l_param) -> BOOL
+			//
+			// この関数は指定された条件の既存のコントロールを返します。
+			//
+			constexpr auto find_window = [](HWND parent, HWND after, LPCWSTR class_name, LPCWSTR window_name)
 			{
-				MY_TRACE_HWND(child);
+				return readymade_t::control_t { parent, ::FindWindowExW(parent, after, class_name, tr(L"Dialog", window_name)) };
+			};
 
-				// thisポインタを取得します。
-				auto p = (new_project_t*)l_param;
-
-				// 直接の子ウィンドウではない場合は除外します。
-				if (::GetParent(child) != *p) return TRUE;
-
-				// 既存のコントロールの矩形を取得します。
-				auto rc = my::get_window_rect(child);
-				my::map_window_points(nullptr, *p, &rc);
-
-				// 既存のコントロールをコレクションに追加します。
-				p->controls.emplace_back(child, rc);
-
-				// 列挙を続けます。
-				return TRUE;
-			},
-			(LPARAM)this);
-
-			// 既存のコントロールの数が無効の場合は失敗します。
-			if (controls.size() < sizeof(readymade) / sizeof(readymade.ok) - 2) return FALSE;
-
+			//
+			// この関数は指定された条件の既存のコントロールを返します。
+			//
+			constexpr auto get_window = [](HWND parent, HWND hwnd, UINT cmd)
 			{
-				// コントロールのインデックスです。
-				auto index = size_t {};
+				return readymade_t::control_t { parent, ::GetWindow(hwnd, cmd) };
+			};
 
-				// 基準となるコントロールを取得します。
-				const auto& control = controls[1];
+			// 「名前」関連のコントロールを取得します。
+			readymade.name_stc = find_window(hwnd, nullptr, WC_STATICW, L"名前");
+			readymade.name = get_window(hwnd, readymade.name_stc, GW_HWNDNEXT);
 
-				// 基準となるコントロールのクラス名を取得します。
-				auto class_name = my::get_class_name(control);
+			// 「解像度」関連のコントロールを取得します。
+			readymade.video_size_stc = find_window(hwnd, nullptr, WC_STATICW, L"解像度");
+			readymade.video_width = get_window(hwnd, readymade.video_size_stc, GW_HWNDNEXT);
+			readymade.video_height = get_window(hwnd, readymade.video_width, GW_HWNDNEXT);
 
-				// 基準となるコントロールがエディットボックスの場合は
-				if (::lstrcmpiW(class_name.c_str(), WC_EDITW) == 0)
-				{
-					// 「シーンを新規作成」または(通常の)「シーンの設定」ダイアログです。
+			// 「フレームレート」関連のコントロールを取得します。
+			readymade.video_rate_stc = find_window(hwnd, nullptr, WC_STATICW, L"フレームレート");
+			readymade.video_rate = get_window(hwnd, readymade.video_rate_stc, GW_HWNDNEXT);
 
-					readymade.name_stc = &controls[index++];
-					readymade.name = &controls[index++];
-				}
-				else
-				{
-					// 「プロジェクトを新規作成」または(出力時の)「シーンの設定」ダイアログです。
-				}
+			// 「サンプリングレート」関連のコントロールを取得します。
+			readymade.audio_rate_stc = find_window(hwnd, nullptr, WC_STATICW, L"サンプリングレート");
+			readymade.audio_rate = get_window(hwnd, readymade.audio_rate_stc, GW_HWNDNEXT);
 
-				readymade.video_size_stc = &controls[index++];
-				readymade.video_width = &controls[index++];
-				readymade.video_height = &controls[index++];
-				readymade.video_rate_stc = &controls[index++];
-				readymade.video_rate = &controls[index++];
-				readymade.audio_rate_stc = &controls[index++];
-				readymade.audio_rate = &controls[index++];
-				readymade.background_color_stc = &controls[index++];
-				readymade.background_color = &controls[index++];
-				readymade.background_color_picker = &controls[index++];
-				readymade.horz_border = &controls[index++];
-				readymade.output_size_stc = &controls[index++];
-				readymade.output_width = &controls[index++];
-				readymade.output_height = &controls[index++];
-				readymade.output_audio_stc = &controls[index++];
-				readymade.output_audio = &controls[index++];
-				readymade.tip_stc = &controls[index++];
-				readymade.horz_border_2 = &controls[index++];
-				readymade.preset = &controls[index++];
-				readymade.add_preset = &controls[index++];
-				readymade.ok = &controls.back();
-			}
+			// 「出力リサイズ」関連のコントロールを取得します。
+			readymade.output_size_stc = find_window(hwnd, nullptr, WC_STATICW, L"出力リサイズ");
+			readymade.output_width = get_window(hwnd, readymade.output_size_stc, GW_HWNDNEXT);
+			readymade.output_height = get_window(hwnd, readymade.output_width, GW_HWNDNEXT);
+
+			// 「OK」ボタンを取得します。
+			readymade.ok = find_window(hwnd, nullptr, WC_BUTTONW, L"OK");
 
 			return TRUE;
 		}
@@ -174,14 +172,14 @@ namespace apn::preset_adder::dialog
 
 			// 基準サイズを取得します。
 			auto base = SIZE {
-				my::get_width(readymade.video_rate->rc),
-				my::get_height(readymade.video_rate->rc),
+				my::get_width(readymade.video_rate.rc),
+				my::get_height(readymade.video_rate.rc),
 			};
 
 			// 余白サイズを取得します。
 			auto space = SIZE {
-				readymade.video_height->rc.left - readymade.video_width->rc.right,
-				readymade.video_rate->rc.top - readymade.video_width->rc.bottom,
+				readymade.video_height.rc.left - readymade.video_width.rc.right,
+				readymade.video_rate.rc.top - readymade.video_width.rc.bottom,
 			};
 
 			// 移動予定のオフセットサイズを取得します。
@@ -190,20 +188,87 @@ namespace apn::preset_adder::dialog
 				base.cy + space.cy,
 			};
 
+			// ダイアログのサイズを変更します。
+			{
+				WINDOWPLACEMENT wp = { sizeof(wp) };
+				::GetWindowPlacement(hwnd, &wp);
+				wp.rcNormalPosition.right += offset.cx;
+				wp.rcNormalPosition.bottom += offset.cy;
+				::SetWindowPlacement(hwnd, &wp);
+			}
+
+			// 既存のコントロールの位置を変更します。
+			{
+				// コントロールの位置を一括変更するために使用します。
+				my::DeferWindowPos dwp;
+
+				//
+				// この関数は既存のコントロールの位置を変更します。
+				//
+				const auto func = [&](HWND child) -> BOOL
+				{
+					MY_TRACE_HWND(child);
+
+					// 直接の子ウィンドウではない場合は除外します。
+					if (::GetParent(child) != *this) return TRUE;
+
+					// コントロールのウィンドウ矩形を取得します。
+					auto rc = my::get_window_rect(child);
+
+					// 親ウィンドウ(ダイアログ)の座標系に変換します。
+					my::map_window_points(nullptr, *this, &rc);
+
+					// 「OK」ボタンの場合は
+					if (child == readymade.ok)
+					{
+						auto w = my::get_width(rc);
+						auto h = my::get_height(rc);
+
+						rc.left = client_rc.right + offset.cx - (w + space.cx * 2) * 2;
+						rc.top = client_rc.bottom + offset.cy - (h + space.cy * 2);
+						rc.right = rc.left + w;
+						rc.bottom = rc.top + h;
+					}
+					// それ以外のコントロールの場合は
+					else
+					{
+						// オフセットの分だけずらします。
+						::OffsetRect(&rc, 0, offset.cy);
+					}
+
+					// コントロールのウィンドウ位置を変更します。
+					dwp.set_window_pos(child, nullptr, &rc, SWP_NOZORDER);
+
+					// 列挙を続けます。
+					return TRUE;
+				};
+
+				// 既存のコントロールを列挙します。
+				::EnumChildWindows(hwnd, [](HWND child, LPARAM l_param) -> BOOL
+				{
+					// 関数を取得します。
+					auto p = (decltype(&func))l_param;
+
+					// 関数を実行します。
+					return (*p)(child);
+				},
+				(LPARAM)&func);
+			}
+
 			// 追加のコントロールを作成します。
 			{
-				// コントロールのフォントです。
-				auto font = (HFONT)::SendMessage(*readymade.ok, WM_GETFONT, 0, 0);
+				// 既存のコントロールのフォントを取得します。
+				auto font = (HFONT)::SendMessage(readymade.ok, WM_GETFONT, 0, 0);
 
 				// 追加コントロールの基準X座標です。
-				auto x = readymade.video_height->rc.right + space.cx;
+				auto x = readymade.video_height.rc.right + space.cx;
 
 				{
 					// Y座標の基準となるコントロール(一番上のコントロール)です。
 					auto base_control = readymade.name_stc ? readymade.name_stc : readymade.video_size_stc;
 
 					// 追加コントロールの基準Y座標です。
-					auto y = base_control->rc.top;
+					auto y = base_control.rc.top;
 
 					//
 					// この関数はコントロールを作成します。
@@ -234,19 +299,20 @@ namespace apn::preset_adder::dialog
 					};
 
 					retrofit.preset_stc = create_control(
-						WC_STATICW, tr(L"プリセット"), SS_CENTERIMAGE, readymade.video_size_stc->rc.left, y, base.cx, base.cy);
-					retrofit.preset = create_combobox(readymade.video_width->rc.left, y, base.cx, base.cy);
+						WC_STATICW, tr(L"プリセット"), SS_CENTERIMAGE, readymade.video_size_stc.rc.left, y,
+						my::get_width(readymade.video_size_stc.rc), my::get_height(readymade.video_size_stc.rc));
+					retrofit.preset = create_combobox(readymade.video_width.rc.left, y, base.cx, base.cy);
 					retrofit.swap_video_size = create_control(
 						WC_BUTTONW, tr(L"縦横反転"), BS_AUTOCHECKBOX, x, y, base.cx, base.cy);
 					if (readymade.name_stc)
-						retrofit.name_preset = create_combobox(x, readymade.name_stc->rc.top + offset.cy, base.cx, base.cy);
-					retrofit.video_size_preset = create_combobox(x, readymade.video_size_stc->rc.top + offset.cy, base.cx, base.cy);
-					retrofit.video_rate_preset = create_combobox(x, readymade.video_rate_stc->rc.top + offset.cy, base.cx, base.cy);
-					retrofit.audio_rate_preset = create_combobox(x, readymade.audio_rate_stc->rc.top + offset.cy, base.cx, base.cy);
+						retrofit.name_preset = create_combobox(x, readymade.name_stc.rc.top + offset.cy, base.cx, base.cy);
+					retrofit.video_size_preset = create_combobox(x, readymade.video_size_stc.rc.top + offset.cy, base.cx, base.cy);
+					retrofit.video_rate_preset = create_combobox(x, readymade.video_rate_stc.rc.top + offset.cy, base.cx, base.cy);
+					retrofit.audio_rate_preset = create_combobox(x, readymade.audio_rate_stc.rc.top + offset.cy, base.cx, base.cy);
 
 					{
-						auto w = my::get_width(readymade.ok->rc);
-						auto h = my::get_height(readymade.ok->rc);
+						auto w = my::get_width(readymade.ok.rc);
+						auto h = my::get_height(readymade.ok.rc);
 						auto x = client_rc.right + offset.cx - (w + space.cx * 2);
 						auto y = client_rc.bottom + offset.cy - (h + space.cy * 2);
 
@@ -357,42 +423,6 @@ namespace apn::preset_adder::dialog
 				}
 			}
 
-			// ダイアログのサイズを変更します。
-			{
-				WINDOWPLACEMENT wp = { sizeof(wp) };
-				::GetWindowPlacement(hwnd, &wp);
-				wp.rcNormalPosition.right += offset.cx;
-				wp.rcNormalPosition.bottom += offset.cy;
-				::SetWindowPlacement(hwnd, &wp);
-			}
-
-			// コントロールの位置を変更します。
-			{
-				my::DeferWindowPos dwp;
-
-				for (const auto& control : controls)
-				{
-					auto rc = control.rc;
-
-					if (&control == readymade.ok)
-					{
-						auto w = my::get_width(rc);
-						auto h = my::get_height(rc);
-
-						rc.left = client_rc.right + offset.cx - (w + space.cx * 2) * 2;
-						rc.top = client_rc.bottom + offset.cy - (h + space.cy * 2);
-						rc.right = rc.left + w;
-						rc.bottom = rc.top + h;
-					}
-					else
-					{
-						::OffsetRect(&rc, 0, offset.cy);
-					}
-
-					dwp.set_window_pos(control, nullptr, &rc, SWP_NOZORDER);
-				}
-			}
-
 			return TRUE;
 		}
 
@@ -423,13 +453,13 @@ namespace apn::preset_adder::dialog
 					//
 					// この関数はコントロールのテキストを変更します。
 					//
-					const auto set_control_text = [this](const control_t* control, const std::wstring& text)
+					const auto set_control_text = [this](HWND control, const std::wstring& text)
 					{
 						// コントロールとテキストがどちらも有効の場合は
-						if (control && ::IsWindowEnabled(*control) && text.length())
+						if (::IsWindowEnabled(control) && text.length())
 						{
 							// コントロールのテキストを変更します。
-							::SetWindowTextW(*control, text.c_str());
+							::SetWindowTextW(control, text.c_str());
 						}
 					};
 
@@ -439,15 +469,15 @@ namespace apn::preset_adder::dialog
 					const auto get_video_size_controls = [this]()
 					{
 						// 映像サイズのコントロールを取得します。
-						auto video_width = readymade.video_width;
-						auto video_height = readymade.video_height;
+						auto* video_width = &readymade.video_width;
+						auto* video_height = &readymade.video_height;
 
 						// 映像サイズのコントロールが無効状態の場合は
 						if (!::IsWindowEnabled(*video_width) || !::IsWindowEnabled(*video_height))
 						{
 							// 出力サイズのコントロールを取得します。
-							video_width = readymade.output_width;
-							video_height = readymade.output_height;
+							video_width = &readymade.output_width;
+							video_height = &readymade.output_height;
 						}
 
 						// 縦横反転にチェックが入っている場合はコントロールを入れ替えます。
@@ -482,8 +512,8 @@ namespace apn::preset_adder::dialog
 						{
 							auto video_size = get_video_size_controls();
 
-							set_control_text(video_size.first, preset.video_width);
-							set_control_text(video_size.second, preset.video_height);
+							set_control_text(*video_size.first, preset.video_width);
+							set_control_text(*video_size.second, preset.video_height);
 
 							set_control_text(readymade.video_rate, preset.video_rate);
 							set_control_text(readymade.audio_rate, preset.audio_rate);
@@ -524,8 +554,8 @@ namespace apn::preset_adder::dialog
 						{
 							auto video_size = get_video_size_controls();
 
-							set_control_text(video_size.first, preset.video_width);
-							set_control_text(video_size.second, preset.video_height);
+							set_control_text(*video_size.first, preset.video_width);
+							set_control_text(*video_size.second, preset.video_height);
 						}
 					}
 					else if (control == retrofit.video_rate_preset)
