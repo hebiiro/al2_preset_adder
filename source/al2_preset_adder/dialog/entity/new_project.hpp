@@ -52,17 +52,7 @@ namespace apn::preset_adder::dialog
 			control_t video_size_stc, video_width, video_height;
 			control_t video_rate_stc, video_rate;
 			control_t audio_rate_stc, audio_rate;
-/*
-			control_t background_color_stc, background_color, background_color_picker;
-			control_t horz_border;
-*/
 			control_t output_size_stc, output_width, output_height;
-/*
-			control_t output_audio_stc, output_audio;
-			control_t tip_stc;
-			control_t horz_border_2;
-			control_t preset, add_preset;
-*/
 			control_t ok;
 		} readymade = {};
 
@@ -77,6 +67,7 @@ namespace apn::preset_adder::dialog
 			HWND video_size_preset; // "映像サイズプリセット"のコンボボックスです。
 			HWND video_rate_preset; // "映像レートプリセット"のコンボボックスです。
 			HWND audio_rate_preset; // "音声レートプリセット"のコンボボックスです。
+			HWND output_size_preset; // "出力リサイズプリセット"のコンボボックスです。
 			HWND cancel; // キャンセルボタンです。
 		} retrofit = {};
 
@@ -251,8 +242,7 @@ namespace apn::preset_adder::dialog
 
 					// 関数を実行します。
 					return (*p)(child);
-				},
-				(LPARAM)&func);
+				}, (LPARAM)&func);
 			}
 
 			// 追加のコントロールを作成します。
@@ -309,6 +299,7 @@ namespace apn::preset_adder::dialog
 					retrofit.video_size_preset = create_combobox(x, readymade.video_size_stc.rc.top + offset.cy, base.cx, base.cy);
 					retrofit.video_rate_preset = create_combobox(x, readymade.video_rate_stc.rc.top + offset.cy, base.cx, base.cy);
 					retrofit.audio_rate_preset = create_combobox(x, readymade.audio_rate_stc.rc.top + offset.cy, base.cx, base.cy);
+					retrofit.output_size_preset = create_combobox(x, readymade.output_size_stc.rc.top + offset.cy, base.cx, base.cy);
 
 					{
 						auto w = my::get_width(readymade.ok.rc);
@@ -420,6 +411,24 @@ namespace apn::preset_adder::dialog
 							}
 						}
 					}
+
+					{
+						// 出力リサイズプリセットのコンボボックスを初期化します。
+						auto combobox = retrofit.output_size_preset;
+						customize_combobox(combobox);
+						for (const auto& preset : table::video_size.nodes)
+						{
+							if (preset.display_name.empty())
+							{
+								my::combobox::add_text(combobox,
+									my::format(L"{/} x {/}", preset.video_width, preset.video_height).c_str());
+							}
+							else
+							{
+								my::combobox::add_text(combobox, preset.display_name.c_str());
+							}
+						}
+					}
 				}
 			}
 
@@ -453,7 +462,7 @@ namespace apn::preset_adder::dialog
 					//
 					// この関数はコントロールのテキストを変更します。
 					//
-					const auto set_control_text = [this](HWND control, const std::wstring& text)
+					constexpr auto set_control_text = [](HWND control, const std::wstring& text)
 					{
 						// コントロールとテキストがどちらも有効の場合は
 						if (::IsWindowEnabled(control) && text.length())
@@ -464,38 +473,65 @@ namespace apn::preset_adder::dialog
 					};
 
 					//
-					// この関数は映像サイズのコントロールを返します。
+					// この関数はコントロールの映像サイズを変更します。
 					//
-					const auto get_video_size_controls = [this]()
+					constexpr auto set_control_video_size = [](BOOL flag_swap_video_size,
+						const auto& lhs, const auto& rhs, const std::wstring& lhs_text, const std::wstring& rhs_text)
 					{
-						// 映像サイズのコントロールを取得します。
-						auto* video_width = &readymade.video_width;
-						auto* video_height = &readymade.video_height;
+						// コントロールが無効状態の場合は何もしません。
+						if (!::IsWindowEnabled(lhs)) return;
+						if (!::IsWindowEnabled(rhs)) return;
 
-						// 映像サイズのコントロールが無効状態の場合は
-						if (!::IsWindowEnabled(*video_width) || !::IsWindowEnabled(*video_height))
+						// 映像サイズの縦横を入れ替える場合は
+						if (flag_swap_video_size)
 						{
-							// 出力サイズのコントロールを取得します。
-							video_width = &readymade.output_width;
-							video_height = &readymade.output_height;
+							// コントロールのテキストを縦横逆にセットします。
+							::SetWindowTextW(lhs, rhs_text.c_str());
+							::SetWindowTextW(rhs, lhs_text.c_str());
 						}
-
-						// 縦横反転にチェックが入っている場合はコントロールを入れ替えます。
-						return (::SendMessage(retrofit.swap_video_size, BM_GETCHECK, 0, 0) == BST_CHECKED) ?
-							std::make_pair(video_height, video_width) : std::make_pair(video_width, video_height);
+						// 映像サイズの縦横を入れ替えない場合は
+						else
+						{
+							// コントロールのテキストを普通にセットします。
+							::SetWindowTextW(lhs, lhs_text.c_str());
+							::SetWindowTextW(rhs, rhs_text.c_str());
+						}
 					};
 
-					// ロックされている場合は何もしません。
+					//
+					// この関数はコントロールのテキストを入れ替えます。
+					//
+					constexpr auto swap_control_text = [](HWND lhs, HWND rhs)
+					{
+						// コントロールが無効状態の場合は何もしません。
+						if (!::IsWindowEnabled(lhs)) return;
+						if (!::IsWindowEnabled(rhs)) return;
+
+						// コントロールのテキストを取得します。
+						auto lhs_text = my::get_window_text(lhs);
+						auto rhs_text = my::get_window_text(rhs);
+
+						// コントロールのテキストを入れ替えます。
+						::SetWindowTextW(lhs, rhs_text.c_str());
+						::SetWindowTextW(rhs, lhs_text.c_str());
+					};
+
+					// ダイアログがロックされている場合は何もしません。
 					if (is_locked()) break;
 
+					// ダイアログをロックします。
 					my::locker_t locker(this);
 
+					// WM_COMMANDの引数を取得します。
 //					auto control_id = LOWORD(w_param);
 					auto code = HIWORD(w_param);
 					auto control = (HWND)l_param;
 
 					// コントロールが無効の場合は何もしません。
 					if (!control) break;
+
+					// 映像サイズをスワップするかどうかのフラグを取得します。
+					auto flag_swap_video_size = ::SendMessage(retrofit.swap_video_size, BM_GETCHECK, 0, 0) == BST_CHECKED;
 
 					if (control == retrofit.preset)
 					{
@@ -508,19 +544,26 @@ namespace apn::preset_adder::dialog
 						// テーブルからプロジェクトのプリセットを取得します。
 						const auto& preset = table::project.nodes[index];
 
-						// プロジェクトのプリセットを適用します。
-						{
-							auto video_size = get_video_size_controls();
+						// シーン名をセットします。
+						if (readymade.name)
+							set_control_text(readymade.name, preset.scene_name);
 
-							set_control_text(*video_size.first, preset.video_width);
-							set_control_text(*video_size.second, preset.video_height);
+						// 映像サイズをセットします。
+						set_control_video_size(flag_swap_video_size,
+							readymade.video_width, readymade.video_height,
+							preset.video_width, preset.video_height);
 
-							set_control_text(readymade.video_rate, preset.video_rate);
-							set_control_text(readymade.audio_rate, preset.audio_rate);
+						// 映像レートをセットします。
+						set_control_text(readymade.video_rate, preset.video_rate);
 
-							if (readymade.name)
-								set_control_text(readymade.name, preset.scene_name);
-						}
+						// 音声レートをセットします。
+						set_control_text(readymade.audio_rate, preset.audio_rate);
+#if 0
+						// 出力リサイズをセットします。
+						set_control_video_size(flag_swap_video_size,
+							readymade.output_width, readymade.output_height,
+							preset.video_width, preset.video_height);
+#endif
 					}
 					else if (control == retrofit.name_preset)
 					{
@@ -533,11 +576,9 @@ namespace apn::preset_adder::dialog
 						// テーブルからシーン名のプリセットを取得します。
 						const auto& preset = table::scene_name.nodes[index];
 
-						// シーン名のプリセットを適用します。
-						{
-							if (readymade.name)
-								set_control_text(readymade.name, preset.scene_name);
-						}
+						// シーン名をセットします。
+						if (readymade.name)
+							set_control_text(readymade.name, preset.scene_name);
 					}
 					else if (control == retrofit.video_size_preset)
 					{
@@ -550,13 +591,10 @@ namespace apn::preset_adder::dialog
 						// テーブルから映像サイズのプリセットを取得します。
 						const auto& preset = table::video_size.nodes[index];
 
-						// 映像サイズのプリセットを適用します。
-						{
-							auto video_size = get_video_size_controls();
-
-							set_control_text(*video_size.first, preset.video_width);
-							set_control_text(*video_size.second, preset.video_height);
-						}
+						// 映像サイズをセットします。
+						set_control_video_size(flag_swap_video_size,
+							readymade.video_width, readymade.video_height,
+							preset.video_width, preset.video_height);
 					}
 					else if (control == retrofit.video_rate_preset)
 					{
@@ -569,10 +607,8 @@ namespace apn::preset_adder::dialog
 						// テーブルから映像レートのプリセットを取得します。
 						const auto& preset = table::video_rate.nodes[index];
 
-						// 映像レートのプリセットを適用します。
-						{
-							set_control_text(readymade.video_rate, preset.video_rate);
-						}
+						// 映像レートをセットします。
+						set_control_text(readymade.video_rate, preset.video_rate);
 					}
 					else if (control == retrofit.audio_rate_preset)
 					{
@@ -585,25 +621,32 @@ namespace apn::preset_adder::dialog
 						// テーブルから音声レートのプリセットを取得します。
 						const auto& preset = table::audio_rate.nodes[index];
 
-						// 音声レートのプリセットを適用します。
-						{
-							set_control_text(readymade.audio_rate, preset.audio_rate);
-						}
+						// 音声レートをセットします。
+						set_control_text(readymade.audio_rate, preset.audio_rate);
 					}
 					else if (control == retrofit.swap_video_size)
 					{
 						if (code != BN_CLICKED) break;
 
 						// 映像サイズの縦横を入れ替えます。
-						{
-							auto video_size = get_video_size_controls();
+						swap_control_text(readymade.video_width, readymade.video_height);
+						swap_control_text(readymade.output_width, readymade.output_height);
+					}
+					else if (control == retrofit.output_size_preset)
+					{
+						if (code != CBN_SELCHANGE) break;
 
-							auto first = my::get_window_text(*video_size.first);
-							auto second = my::get_window_text(*video_size.second);
+						// コンボボックスから選択されているプリセットのインデックスを取得します。
+						auto index = (size_t)my::combobox::get_cur_sel(control);
+						if (index >= table::video_size.nodes.size()) break;
 
-							::SetWindowTextW(*video_size.first, second.c_str());
-							::SetWindowTextW(*video_size.second, first.c_str());
-						}
+						// テーブルから映像サイズのプリセットを取得します。
+						const auto& preset = table::video_size.nodes[index];
+
+						// 出力リサイズをセットします。
+						set_control_video_size(flag_swap_video_size,
+							readymade.output_width, readymade.output_height,
+							preset.video_width, preset.video_height);
 					}
 					else if (control == retrofit.cancel)
 					{
