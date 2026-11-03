@@ -6,7 +6,21 @@
 > [!IMPORTANT]
 > * aviutl2のバージョンによってはダイアログのレイアウトが崩れる場合があります。
 
-![スクリーンショット](images/r1.png)
+<p>
+<img src="images/r1.png" alt="スクリーンショット" width="45%">
+</p>
+
+## 📺ニコニコ動画
+
+<a href="https://www.nicovideo.jp/shorts/ss46548628">
+<img src="images/r6_thumbnail.jpg" alt="ニコニコ動画" width="45%">
+</a>
+
+
+* 親登録用のニコニコ動画です。
+* 親登録は任意ですが、して頂けると作者の収入になるので、非常に助かります。
+* ご負担でなければ、よろしくお願いします。
+* [ニコニコの収入](https://x.com/search?q=%23%E3%83%8B%E3%82%B3%E3%83%8B%E3%82%B3%E3%81%AE%E5%8F%8E%E5%85%A5&f=live)はXでつぶやいていることがあります。
 
 ## 🚀インストール
 
