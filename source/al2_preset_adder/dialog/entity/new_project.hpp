@@ -112,7 +112,7 @@ namespace apn::preset_adder::dialog
 			//
 			constexpr auto find_window = [](HWND parent, HWND after, LPCWSTR class_name, LPCWSTR window_name)
 			{
-				return readymade_t::control_t { parent, ::FindWindowExW(parent, after, class_name, tr(L"Dialog", window_name)) };
+				return readymade_t::control_t { parent, ::FindWindowExW(parent, after, class_name, tr(L"Dialog", window_name).c_str()) };
 			};
 
 			//
@@ -289,11 +289,11 @@ namespace apn::preset_adder::dialog
 					};
 
 					retrofit.preset_stc = create_control(
-						WC_STATICW, tr(L"プリセット"), SS_CENTERIMAGE, readymade.video_size_stc.rc.left, y,
+						WC_STATICW, tr(L"プリセット").c_str(), SS_CENTERIMAGE, readymade.video_size_stc.rc.left, y,
 						my::get_width(readymade.video_size_stc.rc), my::get_height(readymade.video_size_stc.rc));
 					retrofit.preset = create_combobox(readymade.video_width.rc.left, y, base.cx, base.cy);
 					retrofit.swap_video_size = create_control(
-						WC_BUTTONW, tr(L"縦横反転"), BS_AUTOCHECKBOX, x, y, base.cx, base.cy);
+						WC_BUTTONW, tr(L"縦横反転").c_str(), BS_AUTOCHECKBOX, x, y, base.cx, base.cy);
 					if (readymade.name_stc)
 						retrofit.name_preset = create_combobox(x, readymade.name_stc.rc.top + offset.cy, base.cx, base.cy);
 					retrofit.video_size_preset = create_combobox(x, readymade.video_size_stc.rc.top + offset.cy, base.cx, base.cy);
@@ -307,7 +307,7 @@ namespace apn::preset_adder::dialog
 						auto x = client_rc.right + offset.cx - (w + space.cx * 2);
 						auto y = client_rc.bottom + offset.cy - (h + space.cy * 2);
 
-						retrofit.cancel = create_control(WC_BUTTONW, tr(L"Dialog", L"キャンセル"), BS_PUSHBUTTON, x, y, w, h);
+						retrofit.cancel = create_control(WC_BUTTONW, tr(L"Dialog", L"キャンセル").c_str(), BS_PUSHBUTTON, x, y, w, h);
 					}
 
 					//
